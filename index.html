@@ -4,200 +4,552 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marvel Universe</title>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0a0a0f;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: #f1f1f1;
 }
 
-body{
-    background:#0f172a;
-    color:white;
+.mv-header {
+  background: linear-gradient(135deg, #8b0000 0%, #cc0000 50%, #8b0000 100%);
+  padding: 40px 24px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-header{
-    text-align:center;
-    padding:30px;
-    background:#dc2626;
+.mv-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.07) 10px, rgba(0,0,0,0.07) 20px);
 }
 
-header h1{
-    font-size:3rem;
+.mv-logo {
+  font-family: 'Bebas Neue', 'Arial Black', sans-serif;
+  font-size: 3.8rem;
+  letter-spacing: 6px;
+  color: #fff;
+  position: relative;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
 }
 
-.search-box{
-    text-align:center;
-    margin:20px;
+.mv-subtitle {
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-top: 6px;
+  position: relative;
 }
 
-input{
-    width:80%;
-    max-width:500px;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    font-size:1rem;
+.mv-controls {
+  background: #111118;
+  padding: 14px 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-bottom: 1px solid #1e1e2e;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.container{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:20px;
-    padding:30px;
+.mv-search-wrap {
+  flex: 1;
+  min-width: 180px;
+  position: relative;
 }
 
-.card{
-    background:#1e293b;
-    border-radius:15px;
-    padding:20px;
-    transition:0.3s;
-    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+.mv-search-wrap i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #555;
+  font-size: 16px;
+  pointer-events: none;
 }
 
-.card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 10px 25px rgba(220,38,38,0.5);
+.mv-search {
+  width: 100%;
+  background: #1a1a28;
+  border: 1px solid #2a2a40;
+  border-radius: 8px;
+  padding: 9px 12px 9px 36px;
+  color: #f1f1f1;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
-.card h2{
-    color:#ef4444;
-    margin-bottom:10px;
+.mv-search:focus { border-color: #cc0000; }
+.mv-search::placeholder { color: #555; }
+
+.mv-filter-btn {
+  background: #1a1a28;
+  border: 1px solid #2a2a40;
+  border-radius: 8px;
+  color: #aaa;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
 
-.card p{
-    color:#cbd5e1;
-    line-height:1.5;
+.mv-filter-btn.active,
+.mv-filter-btn:hover {
+  border-color: #cc0000;
+  color: #ff4444;
+  background: rgba(204,0,0,0.1);
 }
 
-footer{
-    text-align:center;
-    padding:20px;
-    margin-top:20px;
+.mv-count {
+  color: #555;
+  font-size: 12px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.mv-count span { color: #cc0000; font-weight: 600; }
+
+.mv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+  padding: 24px;
+}
+
+.mv-card {
+  background: #13131f;
+  border: 1px solid #1e1e30;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease both;
+}
+
+.mv-card:hover {
+  transform: translateY(-5px);
+  border-color: #cc0000;
+  box-shadow: 0 10px 36px rgba(204,0,0,0.25);
+}
+
+.mv-card-top {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mv-card-body { padding: 16px; }
+
+.mv-card-name {
+  font-family: 'Bebas Neue', 'Arial Black', sans-serif;
+  font-size: 1.35rem;
+  letter-spacing: 1.5px;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.mv-card-alias {
+  font-size: 11px;
+  color: #cc0000;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 9px;
+}
+
+.mv-card-desc {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.55;
+}
+
+.mv-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.mv-tag {
+  background: rgba(204,0,0,0.12);
+  border: 1px solid rgba(204,0,0,0.25);
+  color: #ff6666;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mv-power {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.mv-power-label {
+  font-size: 10px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 42px;
+}
+
+.mv-power-bar {
+  flex: 1;
+  height: 3px;
+  background: #1e1e30;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.mv-power-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #cc0000, #ff4444);
+}
+
+.mv-power-val {
+  font-size: 11px;
+  color: #cc0000;
+  font-weight: 600;
+  min-width: 28px;
+  text-align: right;
+}
+
+.mv-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px;
+  color: #444;
+}
+
+.mv-empty i { font-size: 48px; display: block; margin-bottom: 14px; }
+.mv-empty p { font-size: 14px; }
+
+/* Modal */
+.mv-modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.mv-modal-bg.open { display: flex; }
+
+.mv-modal {
+  background: #13131f;
+  border: 1px solid #2a2a40;
+  border-radius: 18px;
+  width: 400px;
+  max-width: 100%;
+  overflow: hidden;
+  animation: fadeIn 0.2s ease;
+}
+
+.mv-modal-top {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mv-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.55);
+  border: none;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mv-modal-close:hover { background: rgba(204,0,0,0.7); }
+
+.mv-modal-body { padding: 22px; }
+
+.mv-modal-name {
+  font-family: 'Bebas Neue', 'Arial Black', sans-serif;
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  color: #fff;
+  line-height: 1;
+}
+
+.mv-modal-alias {
+  color: #cc0000;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 4px 0 14px;
+}
+
+.mv-modal-desc {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.mv-modal-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.mv-stat {
+  background: #1a1a28;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.mv-stat-label {
+  font-size: 10px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.mv-stat-val {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f1f1;
+}
+
+.mv-modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 18px;
+}
+
+.mv-ask-btn {
+  width: 100%;
+  background: #cc0000;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  padding: 13px;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.2s;
+}
+
+.mv-ask-btn:hover { background: #ff2222; }
+
+footer {
+  text-align: center;
+  padding: 28px;
+  color: #333;
+  font-size: 13px;
+}
+
+footer span { color: #cc0000; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 </style>
-
 </head>
 <body>
 
-<header>
-    <h1>Marvel Universe</h1>
-    <p>Explore Marvel Characters</p>
-</header>
-
-<div class="search-box">
-    <input type="text" id="search" placeholder="Search Marvel Character...">
+<div class="mv-header">
+  <div class="mv-logo">Marvel Universe</div>
+  <div class="mv-subtitle">Earth's Mightiest Heroes &amp; Villains</div>
 </div>
 
-<div class="container" id="characters"></div>
+<div class="mv-controls">
+  <div class="mv-search-wrap">
+    <i class="ti ti-search"></i>
+    <input class="mv-search" id="mv-search" placeholder="Search heroes, villains..." />
+  </div>
+  <button class="mv-filter-btn active" data-filter="all">All</button>
+  <button class="mv-filter-btn" data-filter="hero">Heroes</button>
+  <button class="mv-filter-btn" data-filter="villain">Villains</button>
+  <div class="mv-count" id="mv-count"><span>12</span> characters</div>
+</div>
 
-<footer>
-    Made with ❤️ for Marvel Fans
-</footer>
+<div class="mv-grid" id="mv-grid"></div>
+
+<footer>Made with <span>❤</span> for Marvel Fans</footer>
+
+<!-- Modal -->
+<div class="mv-modal-bg" id="mv-modal-bg">
+  <div class="mv-modal">
+    <div class="mv-modal-top" id="mv-modal-top"></div>
+    <div class="mv-modal-body">
+      <div class="mv-modal-name" id="mv-modal-name"></div>
+      <div class="mv-modal-alias" id="mv-modal-alias"></div>
+      <div class="mv-modal-desc" id="mv-modal-desc"></div>
+      <div class="mv-modal-stats" id="mv-modal-stats"></div>
+      <div class="mv-modal-tags" id="mv-modal-tags"></div>
+      <button class="mv-ask-btn" id="mv-ask-btn"></button>
+    </div>
+  </div>
+</div>
 
 <script>
-
-const marvelCharacters = [
-
-{
-name:"Iron Man",
-description:"Genius billionaire Tony Stark who created advanced armored suits to protect the world."
-},
-
-{
-name:"Spider-Man",
-description:"Peter Parker, a young hero with spider-like abilities, agility, and web-slinging powers."
-},
-
-{
-name:"Captain America",
-description:"Steve Rogers, a super-soldier enhanced by the Super Soldier Serum."
-},
-
-{
-name:"Thor",
-description:"God of Thunder from Asgard wielding the mighty hammer Mjolnir."
-},
-
-{
-name:"Hulk",
-description:"Bruce Banner transforms into the incredibly powerful Hulk when angry."
-},
-
-{
-name:"Black Widow",
-description:"Natasha Romanoff, an elite spy and master combat specialist."
-},
-
-{
-name:"Doctor Strange",
-description:"Master of the Mystic Arts and protector of reality."
-},
-
-{
-name:"Scarlet Witch",
-description:"Wanda Maximoff possesses immense reality-warping and magical powers."
-},
-
-{
-name:"Black Panther",
-description:"T'Challa, king of Wakanda and protector empowered by the Heart-Shaped Herb."
-},
-
-{
-name:"Ant-Man",
-description:"Scott Lang can shrink and grow in size using Pym Particles."
-},
-
-{
-name:"Captain Marvel",
-description:"Carol Danvers possesses cosmic powers and extraordinary strength."
-},
-
-{
-name:"Loki",
-description:"God of Mischief known for magic, deception, and cunning intelligence."
-}
-
+const characters = [
+  { name:"Iron Man", alias:"Tony Stark", type:"hero", emoji:"🦾", bg:"#1a0a0a",
+    desc:"Genius billionaire and weapons manufacturer who built a powered armored suit to escape captivity — then dedicated his life and tech to protecting the world.",
+    tags:["Tech","Avenger","Billionaire"], stats:{team:"Avengers",affiliation:"S.H.I.E.L.D.",power:88,intel:98} },
+  { name:"Spider-Man", alias:"Peter Parker", type:"hero", emoji:"🕷️", bg:"#0a0a1a",
+    desc:"Bitten by a radioactive spider, Peter Parker gained superhuman strength, agility, and a spider-sense — balancing life as a hero with being a regular teenager.",
+    tags:["Agility","Web-Slinger","Street Level"], stats:{team:"Avengers",affiliation:"New York",power:75,intel:85} },
+  { name:"Captain America", alias:"Steve Rogers", type:"hero", emoji:"🛡️", bg:"#0a0f1a",
+    desc:"A frail young man transformed by the Super Soldier Serum into the peak of human perfection, Steve Rogers became a symbol of justice and courage.",
+    tags:["Super Soldier","Avenger","Leader"], stats:{team:"Avengers",affiliation:"S.H.I.E.L.D.",power:72,intel:78} },
+  { name:"Thor", alias:"Thor Odinson", type:"hero", emoji:"⚡", bg:"#0f0a1a",
+    desc:"God of Thunder and Asgardian prince. Wields the enchanted hammer Mjolnir and commands lightning — one of the most powerful beings in all the nine realms.",
+    tags:["Asgardian","Thunder","Avenger"], stats:{team:"Avengers",affiliation:"Asgard",power:95,intel:70} },
+  { name:"Hulk", alias:"Bruce Banner", type:"hero", emoji:"💚", bg:"#091209",
+    desc:"Mild-mannered scientist Bruce Banner becomes an unstoppable green behemoth when pushed by rage — the angrier the Hulk, the stronger he gets.",
+    tags:["Avenger","Science","Strength"], stats:{team:"Avengers",affiliation:"S.H.I.E.L.D.",power:100,intel:95} },
+  { name:"Black Widow", alias:"Natasha Romanoff", type:"hero", emoji:"🕸️", bg:"#080808",
+    desc:"World-class spy and former KGB assassin trained from childhood in the Red Room. One of the most dangerous humans alive — no superpowers, just pure lethal skill.",
+    tags:["Spy","Avenger","Martial Arts"], stats:{team:"Avengers",affiliation:"S.H.I.E.L.D.",power:60,intel:90} },
+  { name:"Doctor Strange", alias:"Stephen Strange", type:"hero", emoji:"🌀", bg:"#0d0a1a",
+    desc:"Once a brilliant but arrogant neurosurgeon, a car accident led Strange to the mystic arts. Now Sorcerer Supreme and protector of Earth's dimensional borders.",
+    tags:["Magic","Sorcerer","Avenger"], stats:{team:"Avengers",affiliation:"Sanctum Sanctorum",power:92,intel:94} },
+  { name:"Scarlet Witch", alias:"Wanda Maximoff", type:"hero", emoji:"🔮", bg:"#150a0a",
+    desc:"Born with chaos magic amplified by the Mind Stone, Wanda can warp reality itself — one of the most powerful beings in the multiverse.",
+    tags:["Magic","Reality","Avenger"], stats:{team:"Avengers",affiliation:"Sokovia",power:99,intel:80} },
+  { name:"Black Panther", alias:"T'Challa", type:"hero", emoji:"🐾", bg:"#080810",
+    desc:"King of Wakanda and protector empowered by the Heart-Shaped Herb. Commands the most technologically advanced nation on Earth, clad in vibranium armor.",
+    tags:["Royalty","Tech","Avenger"], stats:{team:"Avengers",affiliation:"Wakanda",power:78,intel:92} },
+  { name:"Ant-Man", alias:"Scott Lang", type:"hero", emoji:"🐜", bg:"#0a100a",
+    desc:"A former thief who uses Pym Particles to shrink to insect size while retaining full strength — or grow to gigantic proportions. Heart of gold, zero impulse control.",
+    tags:["Size Shift","Avenger","Tech"], stats:{team:"Avengers",affiliation:"San Francisco",power:70,intel:65} },
+  { name:"Captain Marvel", alias:"Carol Danvers", type:"hero", emoji:"⭐", bg:"#0d0a0a",
+    desc:"Imbued with cosmic energy from the Tesseract, Carol Danvers can fly at hypersonic speeds, project photon blasts, and survive in deep space unaided.",
+    tags:["Cosmic","Air Force","Avenger"], stats:{team:"Avengers",affiliation:"Kree Empire",power:97,intel:80} },
+  { name:"Loki", alias:"God of Mischief", type:"villain", emoji:"🪄", bg:"#0a0f0a",
+    desc:"Asgardian god of mischief, adopted son of Odin, and eternal thorn in Thor's side. Master of illusion and sorcery whose allegiances shift like shadows.",
+    tags:["Magic","Trickster","Asgardian"], stats:{team:"None",affiliation:"Asgard",power:82,intel:96} }
 ];
 
-const container = document.getElementById("characters");
+let activeFilter = 'all';
+let searchVal = '';
 
-function displayCharacters(data){
+function renderGrid() {
+  const grid = document.getElementById('mv-grid');
+  const filtered = characters.filter(c => {
+    const matchFilter = activeFilter === 'all' || c.type === activeFilter;
+    const matchSearch = c.name.toLowerCase().includes(searchVal) || c.alias.toLowerCase().includes(searchVal);
+    return matchFilter && matchSearch;
+  });
 
-container.innerHTML="";
+  document.querySelector('#mv-count span').textContent = filtered.length;
 
-data.forEach(character=>{
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="mv-empty"><i class="ti ti-user-search"></i><p>No characters found for "<strong>${searchVal}</strong>"</p></div>`;
+    return;
+  }
 
-container.innerHTML += `
-<div class="card">
-<h2>${character.name}</h2>
-<p>${character.description}</p>
-</div>
-`;
+  grid.innerHTML = filtered.map((c, i) => `
+    <div class="mv-card" data-idx="${characters.indexOf(c)}" style="animation-delay:${i * 40}ms">
+      <div class="mv-card-top" style="background:${c.bg}">
+        <span style="font-size:3rem">${c.emoji}</span>
+      </div>
+      <div class="mv-card-body">
+        <div class="mv-card-name">${c.name}</div>
+        <div class="mv-card-alias">${c.alias}</div>
+        <div class="mv-card-desc">${c.desc.slice(0, 90)}…</div>
+        <div class="mv-tags">${c.tags.map(t => `<span class="mv-tag">${t}</span>`).join('')}</div>
+        <div class="mv-power">
+          <span class="mv-power-label">Power</span>
+          <div class="mv-power-bar"><div class="mv-power-fill" style="width:${c.stats.power}%"></div></div>
+          <span class="mv-power-val">${c.stats.power}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
 
-});
-
+  grid.querySelectorAll('.mv-card').forEach(el => {
+    el.addEventListener('click', () => openModal(parseInt(el.dataset.idx)));
+  });
 }
 
-displayCharacters(marvelCharacters);
+function openModal(idx) {
+  const c = characters[idx];
+  document.getElementById('mv-modal-top').style.background = c.bg;
+  document.getElementById('mv-modal-top').innerHTML = `
+    <span style="font-size:5rem">${c.emoji}</span>
+    <button class="mv-modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+  `;
+  document.getElementById('mv-modal-name').textContent = c.name;
+  document.getElementById('mv-modal-alias').textContent = c.alias;
+  document.getElementById('mv-modal-desc').textContent = c.desc;
+  document.getElementById('mv-modal-stats').innerHTML = `
+    <div class="mv-stat"><div class="mv-stat-label">Team</div><div class="mv-stat-val">${c.stats.team}</div></div>
+    <div class="mv-stat"><div class="mv-stat-label">Affiliation</div><div class="mv-stat-val">${c.stats.affiliation}</div></div>
+    <div class="mv-stat"><div class="mv-stat-label">Power Level</div><div class="mv-stat-val" style="color:#cc0000">${c.stats.power}/100</div></div>
+    <div class="mv-stat"><div class="mv-stat-label">Intelligence</div><div class="mv-stat-val" style="color:#cc0000">${c.stats.intel}/100</div></div>
+  `;
+  document.getElementById('mv-modal-tags').innerHTML = c.tags.map(t => `<span class="mv-tag">${t}</span>`).join('');
+  const btn = document.getElementById('mv-ask-btn');
+  btn.textContent = `Learn more about ${c.name}`;
+  btn.onclick = () => closeModal();
+  document.getElementById('mv-modal-bg').classList.add('open');
+}
 
-document.getElementById("search")
-.addEventListener("input", function(){
+function closeModal() {
+  document.getElementById('mv-modal-bg').classList.remove('open');
+}
 
-const value = this.value.toLowerCase();
-
-const filtered = marvelCharacters.filter(character =>
-character.name.toLowerCase().includes(value)
-);
-
-displayCharacters(filtered);
-
+document.getElementById('mv-modal-bg').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
 });
 
-</script>
+document.getElementById('mv-search').addEventListener('input', function() {
+  searchVal = this.value.toLowerCase();
+  renderGrid();
+});
 
+document.querySelectorAll('.mv-filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.mv-filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    activeFilter = this.dataset.filter;
+    renderGrid();
+  });
+});
+
+renderGrid();
+</script>
 </body>
 </html>
