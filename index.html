@@ -1,10 +1,203 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My First Website</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marvel Universe</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+}
+
+header{
+    text-align:center;
+    padding:30px;
+    background:#dc2626;
+}
+
+header h1{
+    font-size:3rem;
+}
+
+.search-box{
+    text-align:center;
+    margin:20px;
+}
+
+input{
+    width:80%;
+    max-width:500px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-size:1rem;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+    padding:30px;
+}
+
+.card{
+    background:#1e293b;
+    border-radius:15px;
+    padding:20px;
+    transition:0.3s;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 10px 25px rgba(220,38,38,0.5);
+}
+
+.card h2{
+    color:#ef4444;
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#cbd5e1;
+    line-height:1.5;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    margin-top:20px;
+}
+</style>
+
 </head>
 <body>
-    <h1>Hello World1</h1>
-    <p>This website is hosted using GitHub Pages.</p>
+
+<header>
+    <h1>Marvel Universe</h1>
+    <p>Explore Marvel Characters</p>
+</header>
+
+<div class="search-box">
+    <input type="text" id="search" placeholder="Search Marvel Character...">
+</div>
+
+<div class="container" id="characters"></div>
+
+<footer>
+    Made with ❤️ for Marvel Fans
+</footer>
+
+<script>
+
+const marvelCharacters = [
+
+{
+name:"Iron Man",
+description:"Genius billionaire Tony Stark who created advanced armored suits to protect the world."
+},
+
+{
+name:"Spider-Man",
+description:"Peter Parker, a young hero with spider-like abilities, agility, and web-slinging powers."
+},
+
+{
+name:"Captain America",
+description:"Steve Rogers, a super-soldier enhanced by the Super Soldier Serum."
+},
+
+{
+name:"Thor",
+description:"God of Thunder from Asgard wielding the mighty hammer Mjolnir."
+},
+
+{
+name:"Hulk",
+description:"Bruce Banner transforms into the incredibly powerful Hulk when angry."
+},
+
+{
+name:"Black Widow",
+description:"Natasha Romanoff, an elite spy and master combat specialist."
+},
+
+{
+name:"Doctor Strange",
+description:"Master of the Mystic Arts and protector of reality."
+},
+
+{
+name:"Scarlet Witch",
+description:"Wanda Maximoff possesses immense reality-warping and magical powers."
+},
+
+{
+name:"Black Panther",
+description:"T'Challa, king of Wakanda and protector empowered by the Heart-Shaped Herb."
+},
+
+{
+name:"Ant-Man",
+description:"Scott Lang can shrink and grow in size using Pym Particles."
+},
+
+{
+name:"Captain Marvel",
+description:"Carol Danvers possesses cosmic powers and extraordinary strength."
+},
+
+{
+name:"Loki",
+description:"God of Mischief known for magic, deception, and cunning intelligence."
+}
+
+];
+
+const container = document.getElementById("characters");
+
+function displayCharacters(data){
+
+container.innerHTML="";
+
+data.forEach(character=>{
+
+container.innerHTML += `
+<div class="card">
+<h2>${character.name}</h2>
+<p>${character.description}</p>
+</div>
+`;
+
+});
+
+}
+
+displayCharacters(marvelCharacters);
+
+document.getElementById("search")
+.addEventListener("input", function(){
+
+const value = this.value.toLowerCase();
+
+const filtered = marvelCharacters.filter(character =>
+character.name.toLowerCase().includes(value)
+);
+
+displayCharacters(filtered);
+
+});
+
+</script>
+
 </body>
 </html>
